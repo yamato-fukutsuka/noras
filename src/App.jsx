@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
 import Map from './components/Map';
 import GPTResponse from './components/GPTResponse';
 import UserInput from './components/UserInput';
