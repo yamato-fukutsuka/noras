@@ -1,8 +1,11 @@
-import React, { useRef, useEffect } from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+// Map.js
 
-const Map = () => {
+import React, { useRef, useEffect, useState } from 'react';
+import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+
+const Map = ({ locationInfo }) => {
   const mapRef = useRef(null);
+  const [isInfoWindowOpen, setInfoWindowOpen] = useState(false);
 
   useEffect(() => {
     if (mapRef.current) {
@@ -14,27 +17,49 @@ const Map = () => {
         fullscreenControl: false,
         streetViewControl: false
       });
+
+      if (locationInfo) {
+        map.setZoom(22); // ズームレベルを22に設定
+        map.panTo(locationInfo); // 地図の中心を指定した位置に移動
+      }
     }
-  }, []);
+  }, [locationInfo]);
 
   const kokuraStation = {
     lat: 33.8854192,
     lng: 130.8820701
   };
 
+  const handleMarkerClick = () => {
+    setInfoWindowOpen(true);
+  };
+
+  const handleInfoWindowClose = () => {
+    setInfoWindowOpen(false);
+  };
+
   return (
     <LoadScript googleMapsApiKey="AIzaSyDNkYM2cegWpgjbYH84mYXmzLHSTDfEHEg">
       <GoogleMap
         ref={mapRef}
-        center={kokuraStation}
-        zoom={20}
+        center={locationInfo || kokuraStation}
+        zoom={locationInfo ? 30 : 20} // ズームレベルを22に設定
         mapContainerStyle={{ height: '400px', width: '100%' }}
         options={{
           mapTypeId: 'satellite',
           tilt: 45,
           heading: 180
         }}
-      />
+      >
+        {locationInfo && (
+          <Marker position={locationInfo} onClick={handleMarkerClick} />
+        )}
+        {locationInfo && isInfoWindowOpen && (
+          <InfoWindow position={locationInfo} onCloseClick={handleInfoWindowClose}>
+            <div>{locationInfo.description}</div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
     </LoadScript>
   );
 };
