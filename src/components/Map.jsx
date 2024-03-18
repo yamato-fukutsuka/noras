@@ -8,6 +8,7 @@ const Map = () => {
     if (mapRef.current) {
       const map = mapRef.current;
       map.setMapTypeId('satellite');
+      map.setTilt(45);
       map.setOptions({
         mapTypeControl: false,
         fullscreenControl: false,
@@ -26,15 +27,12 @@ const Map = () => {
       <GoogleMap
         ref={mapRef}
         center={kokuraStation}
-        zoom={18}
-        mapContainerStyle={{ height: '400px', width: '100%', display: 'flex' }}
+        zoom={20}
+        mapContainerStyle={{ height: '400px', width: '100%' }}
         options={{
+          mapTypeId: 'satellite',
           tilt: 45,
-          heading: 180,
-          mapId: 'YOUR_MAP_ID',
-          mapTypeControl: false,
-          fullscreenControl: false,
-          streetViewControl: false
+          heading: 180
         }}
       />
     </LoadScript>
