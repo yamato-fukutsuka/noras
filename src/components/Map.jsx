@@ -39,12 +39,13 @@ const Map = ({ locationInfo }) => {
   };
 
   return (
+    <div className='mapApi'>
     <LoadScript googleMapsApiKey="AIzaSyDNkYM2cegWpgjbYH84mYXmzLHSTDfEHEg">
       <GoogleMap
         ref={mapRef}
         center={locationInfo || kokuraStation}
         zoom={locationInfo ? 30 : 20} // ズームレベルを22に設定
-        mapContainerStyle={{ height: '400px', width: '100%' }}
+        mapContainerStyle={{ height: '100vh', width: '100%' }}
         options={{
           mapTypeId: 'satellite',
           tilt: 45,
@@ -61,6 +62,7 @@ const Map = ({ locationInfo }) => {
         )}
       </GoogleMap>
     </LoadScript>
+    </div>
   );
 };
 

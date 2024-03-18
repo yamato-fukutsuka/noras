@@ -72,11 +72,13 @@ function App() {
   };
 
   return (
-    <Container maxWidth="md">
+    <div className='flex_box'>
       <Map />
+      <div className='chat_box'>
       <ChatLog messages={messages} />
       <UserInput onSubmit={handleUserInput} />
-    </Container>
+      </div>
+    </div>
   );
 }
 

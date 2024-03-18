@@ -5,9 +5,30 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  overflow-y: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.flex_box{
+  display: flex;
+  justify-content: space-around;
+}
+.mapApi{
+  width: 60%;
+}
+.chat_box{
+  height: 100vh;
+  width: 30%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+form{
+  position: absolute;
+  bottom: 5%;
 }
