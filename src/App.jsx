@@ -1,6 +1,5 @@
 // App.js
 import React, { useState } from 'react';
-import { Container } from '@mui/material';
 import Map from './components/Map';
 import ChatLog from './components/ChatLog';
 import UserInput from './components/UserInput';
@@ -65,7 +64,7 @@ function App() {
       // エラーハンドリング
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages];
-        updatedMessages[updatedMessages.length - 1].gpt = '(Error occurred)';
+        updatedMessages[updatedMessages.length - 1].gpt = '('+error+')';
         return updatedMessages;
       });
     }
