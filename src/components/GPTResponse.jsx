@@ -1,10 +1,11 @@
+// GPTResponse.js
 import React from 'react';
 import { Typography } from '@mui/material';
 
-const GPTResponse = () => {
+const GPTResponse = ({ response }) => {
   return (
     <Typography variant="body1" gutterBottom>
-      {/* GPTの応答を表示 */}
+      {response}
     </Typography>
   );
 };
