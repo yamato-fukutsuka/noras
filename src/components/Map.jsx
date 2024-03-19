@@ -1,5 +1,6 @@
+```
 import React, { useEffect, useState } from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, StreetViewPanorama } from '@react-google-maps/api';
 import axios from 'axios';
 
 const Map = ({ locationInfo, onDetectedObjects }) => {
@@ -62,30 +63,33 @@ const Map = ({ locationInfo, onDetectedObjects }) => {
         });
         }
       }
-    
-     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [center, panorama, hasStreetView]);
 
-  const handleMapLoad = map => {
-    const newPanorama = new window.google.maps.StreetViewPanorama(
-      document.getElementById('pano'),
-      {
-        position: center,
-        pov: { heading: 165, pitch: 0 },
-        zoom: 30,
-      }
-    );
-    console.log("panorama", newPanorama);
-    map.setStreetView(newPanorama);
-    setPanorama(newPanorama);
+
+  let dragFlag = false;
+  let lastTime = null;
+  const handlePanoramaDrag = (event) => {
+    // 最終イベント実行を記録する
+    lastTime = Date.now();
   };
+
+  setInterval(() => {
+    if(lastTime!=null){
+      if(Date.now() - lastTime > 500){
+        // ここで処理を実行する（例：位置情報を保存する、API呼び出しを行うなど）
+        // この関数はドラッグが完全に終了したタイミングで呼ばれます
+        console.log("AAA")
+        lastTime = null;
+      }
+    }
+  }, 500);
+
 
   return isLoaded ? (
     <>
-      <div className='mapApi'>
+      <div className='mapApi' id="ap">
         <div id='pano'>
           <GoogleMap
-            onLoad={handleMapLoad}
             center={center}
             zoom={18}
             mapContainerStyle={{ height: '100vh', width: '100%' }}
@@ -94,7 +98,16 @@ const Map = ({ locationInfo, onDetectedObjects }) => {
               tilt: 45,
               heading: 180
             }}
+          >
+          <StreetViewPanorama
+              position={center} // ストリートビューの位置を設定
+              pov={{ heading: 165, pitch: 0 }}
+              zoom={30}
+              visible // ストリートビューを表示
+              onPovChanged={handlePanoramaDrag} // ドラッグイベントのハンドラ
+
           />
+          </GoogleMap>
         </div>
       </div>
     </>
