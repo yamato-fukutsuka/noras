@@ -1,11 +1,12 @@
-// App.js
 import React, { useState } from 'react';
 import { Container } from '@mui/material';
 import Map from './components/Map';
 import ChatLog from './components/ChatLog';
 import UserInput from './components/UserInput';
+import nlp from 'compromise';
 
-const API_KEY = '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';
+
+const API_KEY = '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';
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const sendToGPT = async (input) => {
@@ -46,6 +47,7 @@ const sendToGPT = async (input) => {
 
 function App() {
   const [messages, setMessages] = useState([]);
+  const [locationInfo, setLocationInfo] = useState(null);
 
   const handleUserInput = async (input) => {
     try {
@@ -58,6 +60,21 @@ function App() {
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages];
         updatedMessages[updatedMessages.length - 1].gpt = response;
+
+        // GPTの応答から場所の名前を抽出
+        const locationName = extractLocationName(response);
+
+        if (locationName) {
+          // 場所の名前から緯度と経度を取得
+          getLocationCoordinates(locationName)
+            .then((coordinates) => {
+              setLocationInfo(coordinates);
+            })
+            .catch((error) => {
+              console.error('Error getting location coordinates:', error);
+            });
+        }
+
         return updatedMessages;
       });
     } catch (error) {
@@ -71,9 +88,52 @@ function App() {
     }
   };
 
+
+// GPTの応答から場所の名前を抽出する関数
+const extractLocationName = (response) => {
+  const doc = nlp(response);
+  const places = doc.places().out('array');
+
+  if (places.length > 0) {
+    console.log('Places:', places);
+    // 最初の場所の名前を返す
+    return places[0];
+  }
+
+  // 場所が見つからない場合は、GPTの応答全体を返す
+  return response;
+};
+  // 場所の名前から緯度と経度を取得する関数
+// 場所の名前から緯度と経度を取得する関数
+const getLocationCoordinates = async (locationName) => {
+  const response = await fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+      locationName
+    )}&key=AIzaSyDNkYM2cegWpgjbYH84mYXmzLHSTDfEHEg`
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  console.log('Location data:', data);
+
+  if (data.results.length > 0) {
+    const { lat, lng } = data.results[0].geometry.location;
+    return { lat, lng };
+  }
+
+  // 緯度と経度が見つからない場合は、デフォルトの位置情報を返す
+  return {
+    lat: 35.6809591,
+    lng: 139.7673068
+  };
+};
+
   return (
     <Container maxWidth="md">
-      <Map />
+      <Map locationInfo={locationInfo} />
       <ChatLog messages={messages} />
       <UserInput onSubmit={handleUserInput} />
     </Container>
