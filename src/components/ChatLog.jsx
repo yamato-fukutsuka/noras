@@ -20,7 +20,7 @@ const ChatLog = ({ messages, detectedObjects }) => {
         }, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer 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`,
+            'Authorization': `Bearer OpenAIKEY`,
           }
         })
         .then(response => {
