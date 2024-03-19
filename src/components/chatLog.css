@@ -1,0 +1,19 @@
+.chatHistory {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.yourMessage {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.gptsMessage {
+  margin-bottom: 20px;
+  color: #666;
+}

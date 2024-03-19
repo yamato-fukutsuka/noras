@@ -1,6 +1,7 @@
 // UserInput.js
 import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
+import './userInput.css';
 
 const UserInput = ({ onSubmit }) => {
   const [input, setInput] = useState('');
@@ -20,7 +21,7 @@ const UserInput = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <TextField
-        label="質問を入力する"
+        label="おはなしする"
         value={input}
         onChange={handleChange}
         fullWidth

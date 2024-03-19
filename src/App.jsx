@@ -3,9 +3,10 @@ import Map from './components/Map';
 import ChatLog from './components/ChatLog';
 import UserInput from './components/UserInput';
 import nlp from 'compromise';
+import Speech from 'react-speech';
 
 // GPT-3へのリクエストを送信する関数
-const API_KEY = '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';
+const API_KEY = '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';
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const sendToGPT = async (input) => {
@@ -44,50 +45,70 @@ const sendToGPT = async (input) => {
   }
 };
 
+
 function App() {
   const [messages, setMessages] = useState([]);
   const [locationInfo, setLocationInfo] = useState(null);
 
   const handleUserInput = async (input) => {
     try {
-      // リクエストを送信する前にメッセージを追加
-      setMessages([...messages, { user: input, gpt: '(Waiting for response...)' }]);
+      setMessages([...messages, { user: input, gpt: 'そーですね～' }]);
 
       const response = await sendToGPT(input);
+      console.log('GPT response:', response);
 
-      // レスポンスを受け取った後、メッセージを更新
-      setMessages((prevMessages) => {
-        const updatedMessages = [...prevMessages];
-        updatedMessages[updatedMessages.length - 1].gpt = response;
-
-        // GPTの応答から場所の名前を抽出
-        const locationName = extractLocationName(response);
-
-        if (locationName) {
-          // 場所の名前から緯度と経度を取得
-          getLocationCoordinates(locationName)
-            .then((coordinates) => {
-              setLocationInfo(coordinates);
-            })
-            .catch((error) => {
-              console.error('Error getting location coordinates:', error);
-            });
-        }
-
-        return updatedMessages;
-      });
+      await updateMessages(response);
     } catch (error) {
       console.error('Error:', error);
-      // エラーハンドリング
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages];
-        updatedMessages[updatedMessages.length - 1].gpt = '('+error+')';
+        updatedMessages[updatedMessages.length - 1].gpt = '(' + error + ')';
         return updatedMessages;
       });
     }
   };
 
+  const updateMessages = async (response) => {
+    let currentResponse = '';
 
+    for (let i = 0; i < response.length; i++) {
+      currentResponse += response[i];
+      await updateMessageResponse(currentResponse);
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      console.log('Current response:', currentResponse);
+    }
+
+    const locationName = extractLocationName(response);
+
+    if (locationName) {
+      getLocationCoordinates(locationName)
+        .then((coordinates) => {
+          setLocationInfo(coordinates);
+        })
+        .catch((error) => {
+          console.error('Error getting location coordinates:', error);
+        });
+    }
+};
+
+const updateMessageResponse = (currentResponse) => {
+  setMessages((prevMessages) => {
+    const updatedMessages = [...prevMessages];
+    updatedMessages[updatedMessages.length - 1].gpt = currentResponse;
+    console.log('Updated messages:', updatedMessages);
+    return updatedMessages;
+  });
+
+  return (
+      <Speech
+        key={`speech`}
+        text={messages.gpt}
+        voice="Google 日本語"
+        lang="ja-JP"
+        speak={true}
+      />
+  );
+};
 // GPTの応答から場所の名前を抽出する関数
 const extractLocationName = (response) => {
   const doc = nlp(response);
@@ -103,7 +124,6 @@ const extractLocationName = (response) => {
   return response;
 };
   // 場所の名前から緯度と経度を取得する関数
-// 場所の名前から緯度と経度を取得する関数
 const getLocationCoordinates = async (locationName) => {
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
@@ -112,6 +132,7 @@ const getLocationCoordinates = async (locationName) => {
   );
 
   if (!response.ok) {
+    console.log('Response:', response);
     throw new Error(`HTTP error! status: ${response.status}`);
   }
 
@@ -130,15 +151,22 @@ const getLocationCoordinates = async (locationName) => {
   };
 };
 
-  return (
-    <div className='flex_box'>
-      <Map locationInfo={locationInfo} />
-      <div className='chat_box'>
+return (
+  <div className='flex_box'>
+    <Map locationInfo={locationInfo} />
+    <div className='chat_box'>
       <ChatLog messages={messages} />
       <UserInput onSubmit={handleUserInput} />
-      </div>
+      <Speech
+        key={messages.length}
+        text={messages[messages.length - 1]?.gpt || ''}
+        voice="Google 日本語"
+        lang="ja-JP"
+        speak={true}
+      />
     </div>
-  );
+  </div>
+);
 }
 
 export default App;

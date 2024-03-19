@@ -1,5 +1,6 @@
 // ChatLog.js
 import React from 'react';
+import './chatLog.css';
 
 const ChatLog = ({ messages }) => {
   return (
@@ -7,7 +8,7 @@ const ChatLog = ({ messages }) => {
       {messages.map((message, index) => (
         <div key={index}>
           <div className='yourMessage'>
-            <strong>YOU:</strong>
+            <strong>私:</strong>
             {message.user}
           </div>
           <div className='gptsMessage'>
