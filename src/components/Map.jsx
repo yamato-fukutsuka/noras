@@ -1,54 +1,54 @@
 // Map.js
-import React, { useRef, useEffect } from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import React from 'react';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
+// TODO：現状locationInfoを使えてないので、見せたい位置をdefaultCenterに置き換える
 const Map = ({ locationInfo }) => {
-  const mapRef = useRef(null);
 
-  const handleMapLoad = (map) => {
-    mapRef.current = map;
-  };
-
-  useEffect(() => {
-    if (mapRef.current) {
-      const map = mapRef.current;
-      map.setOptions({
-        mapTypeId: 'satellite',
-        tilt: 45,
-        heading: 180
-      });
-
-      if (locationInfo) {
-        map.setCenter(locationInfo);
-        map.setZoom(40); // ズームレベルを18に設定
-      } else {
-        map.setZoom(40); // 初期のズームレベルを18に設定
-      }
-    }
-  }, [locationInfo]);
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: "AIzaSyDNkYM2cegWpgjbYH84mYXmzLHSTDfEHEg"
+  });
 
   const defaultCenter = {
     lat: 35.6809591,
     lng: 139.7673068
   };
 
-  return (
+  const handleMapLoad = map => {
+    const panorama = new window.google.maps.StreetViewPanorama(
+      document.getElementById('pano'), // パノラマを表示する要素のID
+      {
+        position: defaultCenter,
+        pov: { heading: 165, pitch: 0 },
+        zoom: 30,
+      }
+    );
+    map.setStreetView(panorama);
+  };
+
+  return isLoaded ? (
+    <>
     <div className='mapApi'>
-    <LoadScript googleMapsApiKey="AIzaSyDNkYM2cegWpgjbYH84mYXmzLHSTDfEHEg">
-      <GoogleMap
-        onLoad={handleMapLoad}
-        center={locationInfo || defaultCenter}
-        zoom={40} // ズームレベルを18に設定
-        mapContainerStyle={{ height: '100vh', width: '100%' }}
-        options={{
-          mapTypeId: 'satellite',
-          tilt: 45,
-          heading: 180
-        }}
-      />
-    </LoadScript>
+        <div id='pano'>
+        <GoogleMap
+          onLoad={handleMapLoad}
+          center={defaultCenter}
+          zoom={18} // ズームレベルを調整
+          mapContainerStyle={{ height: '100vh', width: '100%' }}
+          options={{
+            mapTypeId: 'satellite',
+            tilt: 45,
+            heading: 180
+          }}
+        />
+        </div>
     </div>
-  );
+      
+
+    
+    </>
+  ) : null;
 };
 
 export default Map;
