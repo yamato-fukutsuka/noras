@@ -5,8 +5,8 @@ import ChatLog from './components/ChatLog';
 import UserInput from './components/UserInput';
 import nlp from 'compromise';
 
-
-const API_KEY = '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';
+// GPT-3へのリクエストを送信する関数
+const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const sendToGPT = async (input) => {
