@@ -33,6 +33,7 @@ const Map = ({ locationInfo }) => {
   };
 
   return (
+    <div className='mapApi'>
     <LoadScript googleMapsApiKey="AIzaSyDNkYM2cegWpgjbYH84mYXmzLHSTDfEHEg">
       <GoogleMap
         onLoad={handleMapLoad}
@@ -46,6 +47,7 @@ const Map = ({ locationInfo }) => {
         }}
       />
     </LoadScript>
+    </div>
   );
 };
 

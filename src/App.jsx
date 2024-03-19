@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Container } from '@mui/material';
 import Map from './components/Map';
 import ChatLog from './components/ChatLog';
 import UserInput from './components/UserInput';
 import nlp from 'compromise';
 
 // GPT-3へのリクエストを送信する関数
-const API_KEY ="";
+const API_KEY = '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';
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const sendToGPT = async (input) => {
@@ -82,7 +81,7 @@ function App() {
       // エラーハンドリング
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages];
-        updatedMessages[updatedMessages.length - 1].gpt = '(Error occurred)';
+        updatedMessages[updatedMessages.length - 1].gpt = '('+error+')';
         return updatedMessages;
       });
     }
@@ -132,11 +131,13 @@ const getLocationCoordinates = async (locationName) => {
 };
 
   return (
-    <Container maxWidth="md">
+    <div className='flex_box'>
       <Map locationInfo={locationInfo} />
+      <div className='chat_box'>
       <ChatLog messages={messages} />
       <UserInput onSubmit={handleUserInput} />
-    </Container>
+      </div>
+    </div>
   );
 }
 

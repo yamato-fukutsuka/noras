@@ -5,9 +5,57 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  overflow-y: hidden;
 }
-
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",monospace;
+}
+.flex_box{
+  display: flex;
+  justify-content: space-around;
+}
+.mapApi{
+  width: 60%;
+}
+.chat_box{
+  height: 96vh;
+  width: 30%;
+  padding: 2vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: relative;
+}
+.gptsMessage{
+  padding: 5px;
+}
+.yourMessage{
+  padding: 5px;
+}
+.chatHistory{
+  height: 70%;
+  max-height: 70%;
+  overflow-y: scroll;
+  border:1px solid gray;
+}
+@media (max-width: 800px) {
+  body {
+    height: auto;
+    overflow-y: scroll;
+  }
+  .flex_box{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+  }.mapApi{
+    width: 100%;
+  }
+  .chat_box{
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-around;
+    position: relative;
+  }
 }

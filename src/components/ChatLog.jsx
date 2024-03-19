@@ -1,18 +1,19 @@
 // ChatLog.js
 import React from 'react';
-import { Typography } from '@mui/material';
 
 const ChatLog = ({ messages }) => {
   return (
-    <div>
+    <div className='chatHistory'>
       {messages.map((message, index) => (
         <div key={index}>
-          <Typography variant="body1" gutterBottom>
-            <strong>User:</strong> {message.user}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            <strong>GPT:</strong> {message.gpt}
-          </Typography>
+          <div className='yourMessage'>
+            <strong>YOU:</strong>
+            {message.user}
+          </div>
+          <div className='gptsMessage'>
+            <strong>GPT:</strong>
+            {message.gpt}
+          </div>
         </div>
       ))}
     </div>
