@@ -39,7 +39,7 @@ const Map = ({ locationInfo }) => {
         onLoad={handleMapLoad}
         center={locationInfo || defaultCenter}
         zoom={40} // ズームレベルを18に設定
-        mapContainerStyle={{ height: '400px', width: '100%' }}
+        mapContainerStyle={{ height: '100vh', width: '100%' }}
         options={{
           mapTypeId: 'satellite',
           tilt: 45,
