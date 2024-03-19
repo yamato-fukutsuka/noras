@@ -6,7 +6,7 @@ import nlp from 'compromise';
 import Speech from 'react-speech';
 
 // GPT-3へのリクエストを送信する関数
-const API_KEY = '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';
+const API_KEY = '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';
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const sendToGPT = async (input) => {
