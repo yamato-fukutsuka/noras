@@ -35,6 +35,3 @@ const UserInput = ({ onSubmit }) => {
 };
 
 export default UserInput;
-
-
-

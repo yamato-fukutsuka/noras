@@ -6,7 +6,7 @@ import nlp from 'compromise';
 import Speech from 'react-speech';
 
 // GPT-3へのリクエストを送信する関数
-const API_KEY = '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';
+const API_KEY = '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';
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const sendToGPT = async (input) => {
@@ -128,7 +128,7 @@ const getLocationCoordinates = async (locationName) => {
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       locationName
-    )}&key=AIzaSyDNkYM2cegWpgjbYH84mYXmzLHSTDfEHEg`
+    )}&key=AIzaSyC_fVLz8h1khvnkMo-Y2kiPvOjEM8VUs8w`
   );
 
   if (!response.ok) {
